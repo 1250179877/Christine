@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="css/conmon.css" />
+    <link rel="stylesheet" type="text/css" href="css/reset.css" />
+</head>
+
+<body>
+    <div class=" content">
+        <div class="us_classify">
+            <div class="us_lists">
+                <div class="lists_div">
+                    <ul class="colearfix">
+                        <!-- <li>
+                            <div class="goods_pic">
+                                <img src="./images/a01.jpg">
+                            </div>
+                            <div class="goods_name">
+                                <em>威廉巧克力慕斯</em>
+                                <i class="icon_sx"></i>
+                                <br>
+                                <span class="text-tag">慕斯稀奶油</span>
+                            </div>
+                            <div class="goods_price">
+                                <div class="price"><em>￥158.00</em>/个</div>
+                                <a class="buy-cart">加入购物车</a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="goods_pic">
+                                <img src="./images/a02.jpg">
+                            </div>
+                            <div class="goods_name">
+                                <em>威廉巧克力慕斯</em>
+                                <i class="icon_sx"></i>
+                                <br>
+                                <span class="text-tag">稀奶油</span>
+                            </div>
+                            <div class="goods_price">
+                                <div class="price"><em>￥158.00</em>/个</div>
+                                <a class="buy-cart">加入购物车</a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="goods_pic">
+                                <img src="./images/a03.jpg">
+                            </div>
+                            <div class="goods_name">
+                                <em>威廉巧克力慕斯</em>
+                                <i class="icon_sx"></i>
+                                <br>
+                                <span class="text-tag">儿童蛋糕</span>
+                            </div>
+                            <div class="goods_price">
+                                <div class="price"><em>￥168.00</em>/个</div>
+                                <a class="buy-cart">加入购物车</a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="goods_pic">
+                                <img src="./images/a04.jpg">
+                            </div>
+                            <div class="goods_name">
+                                <em>威廉巧克力慕斯</em>
+                                <i class="icon_sx"></i>
+                                <br>
+                                <span class="text-tag">慕斯稀奶油</span>
+                            </div>
+                            <div class="goods_price">
+                                <div class="price"><em>￥228.00</em>/个</div>
+                                <a class="buy-cart">加入购物车</a>
+                            </div>
+                        </li>
+                        <li class="bg"></li>  -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery-1.8.3.min.js"></script>
+
+    <script>
+        $.getJSON("data/snacksJson.json", function (res) {
+            //console.log(1);
+
+            var str = "";
+            //var aname = decodeURIComponent(location.search).substr(1).split("&")[0];
+
+            $.each(res, function (index, ele) {
+                //console.log(index,ele);
+                //console.log(ele.kid);
+                if (ele.aid == "ad") {
+                    str += `<li id="ad"></li>`;
+                } else {
+
+                    str += `
+                        <li>
+                            <div class="goods_pic">
+                                <a href='javascript:;' id=${ele.aid}>
+                                    <img data-src='${ele.asrc}' id='listImg'>
+                                </a>
+                            </div>
+                            <div class="goods_name">
+                                <em>${ele.atitle}</em>
+                                <br>
+                                <span class="text-tag">${ele.afeature}</span>
+                            </div>
+                            <div class="goods_price">
+                                <div class="price"><em>${ele.aprice}</em>/个</div>
+                                <a class="buy-cart">加入购物车 ></a>
+                            </div>
+                        </li>
+                    `;
+                }
+
+                $(".lists_div>ul").html(str);
+            });
+            go();
+
+        });
+
+        function go() {
+            function offset(obj) {
+                var l = 0;
+                var t = 0;
+                var bdl = obj.clientLeft;//目标元素的左边框宽度
+                var bdt = obj.clientTop;//目标元素的上边框宽度
+                while (obj) {//循环累加目标元素到定位父级的距离
+                    l = l + obj.offsetLeft + obj.clientLeft;
+                    t = t + obj.offsetTop + obj.clientTop;
+                    obj = obj.offsetParent;//每次循环之后指向离他最近的定位父级
+                }
+                return { left: l - bdl, top: t - bdt };
+            }
+
+            var imgs = document.querySelectorAll('.goods_pic img');
+            //console.log(imgs);
+
+            function load() {
+                var scrollT = document.documentElement.scrollTop || document.body.scrollTop;
+                var windowH = document.documentElement.clientHeight || document.body.clientHeight;
+
+                for (var i = 0, len = imgs.length; i < len; i++) {
+                    if (offset(imgs[i]).top <= (scrollT + windowH)) {
+                        imgs[i].src = imgs[i].getAttribute('data-src');
+                    }
+                }
+            }
+            load();
+
+            window.onscroll = function () {
+                load();
+            }
+        };
+
+    </script>
+
+</body>
+
+</html>
